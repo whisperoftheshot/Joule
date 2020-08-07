@@ -2,19 +2,19 @@
 # Hardware config.
 
 # Maximum velocity for each axis in millimeter per minute.
-MAX_VELOCITY_MM_PER_MIN_X = 24000
-MAX_VELOCITY_MM_PER_MIN_Y = 12000
-MAX_VELOCITY_MM_PER_MIN_Z = 600
-MAX_VELOCITY_MM_PER_MIN_E = 1500
+MAX_VELOCITY_MM_PER_MIN_X = 750
+MAX_VELOCITY_MM_PER_MIN_Y = 750
+MAX_VELOCITY_MM_PER_MIN_Z = 1
+MAX_VELOCITY_MM_PER_MIN_E = 1
 MIN_VELOCITY_MM_PER_MIN = 1
 # Average velocity for endstop calibration procedure
 CALIBRATION_VELOCITY_MM_PER_MIN = 300
 
 # Stepper motors steps per millimeter for each axis.
-STEPPER_PULSES_PER_MM_X = 100
-STEPPER_PULSES_PER_MM_Y = 100
-STEPPER_PULSES_PER_MM_Z = 400
-STEPPER_PULSES_PER_MM_E = 150
+STEPPER_PULSES_PER_MM_X = 113
+STEPPER_PULSES_PER_MM_Y = 113
+STEPPER_PULSES_PER_MM_Z = 1
+STEPPER_PULSES_PER_MM_E = 1
 
 # Invert axises direction, by default(False) high level means increase of
 # position. For inverted(True) axis, high level means decrease of position.
@@ -31,9 +31,9 @@ ENDSTOP_INVERTED_Y = True
 ENDSTOP_INVERTED_Z = False  # Auto leveler
 
 # Workplace physical size.
-TABLE_SIZE_X_MM = 200
-TABLE_SIZE_Y_MM = 200
-TABLE_SIZE_Z_MM = 220
+TABLE_SIZE_X_MM = 600
+TABLE_SIZE_Y_MM = 1200
+TABLE_SIZE_Z_MM = 1
 
 # Mixed settings.
 STEPPER_PULSE_LENGTH_US = 2
@@ -53,15 +53,15 @@ BED_PID = {"P": 0.226740848076,
 # Pins configuration.
 
 # Enable pin for all steppers, low level is enabled.
-STEPPERS_ENABLE_PIN = 26
-STEPPER_STEP_PIN_X = 21
-STEPPER_STEP_PIN_Y = 16
-STEPPER_STEP_PIN_Z = 12
+STEPPERS_ENABLE_PIN = 18
+STEPPER_STEP_PIN_X = 17
+STEPPER_STEP_PIN_Y = 21
+STEPPER_STEP_PIN_Z = 22
 STEPPER_STEP_PIN_E = 8
 
-STEPPER_DIR_PIN_X = 20
-STEPPER_DIR_PIN_Y = 19
-STEPPER_DIR_PIN_Z = 13
+STEPPER_DIR_PIN_X = 23
+STEPPER_DIR_PIN_Y = 24
+STEPPER_DIR_PIN_Z = 25
 STEPPER_DIR_PIN_E = 7
 
 SPINDLE_PWM_PIN = 4
