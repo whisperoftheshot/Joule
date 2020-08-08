@@ -71,9 +71,9 @@ SPINDLE_PWM_PIN = 4
 #EXTRUDER_TEMPERATURE_SENSOR_CHANNEL = 2
 #BED_TEMPERATURE_SENSOR_CHANNEL = 1
 
-ENDSTOP_PIN_X = 23
+ENDSTOP_PIN_X = 26
 ENDSTOP_PIN_Y = 10
-ENDSTOP_PIN_Z = 25
+ENDSTOP_PIN_Z = 28
 
 # -----------------------------------------------------------------------------
 #  Behavior config
