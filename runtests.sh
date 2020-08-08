@@ -3,7 +3,7 @@
 set -e
 
 echo '**********************************************************************'
-echo '* Testing PyCNC modules.                                             *'
+echo '* Testing Joule modules.                                             *'
 echo '* Hint: pass -v to this script arguments to see more verbose output. *'
 echo '* Note: HAL tests should be run manually on corresponding board. For *'
 echo '* example Raspberry Pi tests is tests/rpgpio_test.sh which should be *'
@@ -13,10 +13,10 @@ echo '**********************************************************************'
 echo '---------------------------Unit tests---------------------------------'
 python -m unittest discover "$@" --pattern="test_*.py"
 echo '-------------------------Integration tests----------------------------'
-app="pycnc"
+app="joule"
 if ! which ${app} &> /dev/null; then
-    echo "WARNING pycnc not found in path. Not installed? Using './pycnc'."
-    app="./pycnc"
+    echo "WARNING joule not found in path. Not installed? Using './joule'."
+    app="./joule"
 fi
 res="$(${app} tests/rects.gcode 2>&1)"
 res="${res}$(${app} tests/circles.gcode 2>&1)"

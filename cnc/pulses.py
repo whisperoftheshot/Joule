@@ -7,9 +7,7 @@ from cnc.enums import *
 
 SECONDS_IN_MINUTE = 60.0
 
-
-class PulseGenerator(object):
-    """ Stepper motors pulses generator.
+""" Stepper motors pulses generator.
         It generates time for each pulses for specified path as accelerated
         movement for specified velocity, then moves linearly and then braking
         with the same acceleration.
@@ -29,7 +27,10 @@ class PulseGenerator(object):
         is the ACCELERATION_FACTOR_PER_SEC variable.
         In the same way circular or other interpolation can be implemented
         based this class.
-    """
+"""
+
+class PulseGenerator(object):
+    
     AUTO_VELOCITY_ADJUSTMENT = AUTO_VELOCITY_ADJUSTMENT
 
     def __init__(self, delta):
@@ -72,38 +73,6 @@ class PulseGenerator(object):
         if k != 1.0:
             logging.warning("Out of speed, multiply velocity by {}".format(k))
         return velocity_mm_sec * k
-
-    def _get_movement_parameters(self):
-        """ Get parameters for interpolation. This method have to be
-            reimplemented in parent classes and should calculate 3 parameters.
-        :return: Tuple of three values:
-                acceleration_time_s: time for accelerating and breaking motors
-                                     during movement
-                linear_time_s: time for uniform movement, it is total movement
-                               time minus acceleration and braking time
-                max_axis_velocity_mm_per_sec: maximum axis velocity of all
-                                              axises during movement. Even if
-                                              whole movement is accelerated,
-                                              this value should be calculated
-                                              as top velocity.
-        """
-        raise NotImplemented
-
-    def _interpolation_function(self, ix, iy, iz, ie):
-        """ Get function for interpolation path. This function should returned
-            values as it is uniform movement. There is only one trick, function
-            must be expressed in terms of position, i.e. t = S / V for linear,
-            where S - distance would be increment on motor minimum step.
-        :param ix: number of pulse for X axis.
-        :param iy: number of pulse for Y axis.
-        :param iz: number of pulse for Z axis.
-        :param ie: number of pulse for E axis.
-        :return: Two tuples. First is tuple is directions for each axis,
-                 positive means forward, negative means reverse. Second is
-                 tuple of times for each axis in us or None if movement for
-                 axis is finished.
-        """
-        raise NotImplemented
 
     def __iter__(self):
         """ Get iterator.
@@ -159,19 +128,7 @@ class PulseGenerator(object):
         return self.next()
 
     def next(self):
-        """ Iterate pulses.
-        :return: Tuple of five values:
-                    - first is boolean value, if it is True, motors direction
-                        should be changed and next pulse should performed in
-                        this direction.
-                    - values for all machine axises. For direction update,
-                        positive values means forward movement, negative value
-                        means reverse movement. For normal pulse, values are
-                        represent time for the next pulse in microseconds.
-                 This iteration strictly guarantees that next pulses time will
-                 not be earlier in time then current. If there is no pulses
-                 left StopIteration will be raised.
-        """
+
         direction, (tx, ty, tz, te) = \
             self._interpolation_function(self._iteration_x, self._iteration_y,
                                          self._iteration_z, self._iteration_e)

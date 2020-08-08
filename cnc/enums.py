@@ -42,12 +42,3 @@ class RotationDirection(Enum):
 
 CW = RotationDirection("CW")
 CCW = RotationDirection("CCW")
-
-
-class Heaters(Enum):
-    """ Enum for selecting heater.
-    """
-    pass
-
-HEATER_EXTRUDER = Heaters("extruder")
-HEATER_BED = Heaters("bed")

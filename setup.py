@@ -8,17 +8,17 @@ except(IOError, ImportError):
 
 from setuptools import setup, find_packages
 setup(
-    name="pycnc",
-    version="1.1.0",
+    name="joule",
+    version="0.1",
     packages=find_packages(),
-    scripts=['pycnc'],
+    scripts=['joule'],
 
     # metadata for upload to PyPI
-    author="Nikolay Khabarov",
-    author_email="2xl@mail.ru",
-    description="CNC machine controller",
+    author="Justin Cole",
+    author_email="justincole01@gmail.com",
+    description="CNC Laser controller",
     long_description=long_description,
     license="MIT",
-    keywords="CNC 3D printer robot raspberry pi",
-    url="https://github.com/Nikolay-Kha/PyCNC",
+    keywords="CNC laser raspberry pi",
+    url="https://github.com/whisperoftheshot/joule",
 )

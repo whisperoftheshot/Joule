@@ -3,7 +3,6 @@ import time
 from cnc.hal_raspberry import rpgpio
 from cnc.pulses import *
 from cnc.config import *
-from cnc.sensors import thermistor
 
 US_IN_SECONDS = 1000000
 
@@ -33,14 +32,8 @@ def init():
     gpio.init(ENDSTOP_PIN_Y, rpgpio.GPIO.MODE_INPUT_PULLUP)
     gpio.init(ENDSTOP_PIN_Z, rpgpio.GPIO.MODE_INPUT_PULLUP)
     gpio.init(SPINDLE_PWM_PIN, rpgpio.GPIO.MODE_OUTPUT)
-    gpio.init(FAN_PIN, rpgpio.GPIO.MODE_OUTPUT)
-    gpio.init(EXTRUDER_HEATER_PIN, rpgpio.GPIO.MODE_OUTPUT)
-    gpio.init(BED_HEATER_PIN, rpgpio.GPIO.MODE_OUTPUT)
     gpio.init(STEPPERS_ENABLE_PIN, rpgpio.GPIO.MODE_OUTPUT)
     gpio.clear(SPINDLE_PWM_PIN)
-    gpio.clear(FAN_PIN)
-    gpio.clear(EXTRUDER_HEATER_PIN)
-    gpio.clear(BED_HEATER_PIN)
     gpio.clear(STEPPERS_ENABLE_PIN)
     watchdog.start()
 
@@ -56,51 +49,6 @@ def spindle_control(percent):
         pwm.remove_pin(SPINDLE_PWM_PIN)
 
 
-def fan_control(on_off):
-    """
-    Cooling fan control.
-    :param on_off: boolean value if fan is enabled.
-    """
-    if on_off:
-        logging.info("Fan is on")
-        gpio.set(FAN_PIN)
-    else:
-        logging.info("Fan is off")
-        gpio.clear(FAN_PIN)
-
-
-def extruder_heater_control(percent):
-    """ Extruder heater control.
-    :param percent: heater power in percent 0..100. 0 turns heater off.
-    """
-    if percent > 0:
-        pwm.add_pin(EXTRUDER_HEATER_PIN, percent)
-    else:
-        pwm.remove_pin(EXTRUDER_HEATER_PIN)
-
-
-def bed_heater_control(percent):
-    """ Hot bed heater control.
-    :param percent: heater power in percent 0..100. 0 turns heater off.
-    """
-    if percent > 0:
-        pwm.add_pin(BED_HEATER_PIN, percent)
-    else:
-        pwm.remove_pin(BED_HEATER_PIN)
-
-
-def get_extruder_temperature():
-    """ Measure extruder temperature.
-    :return: temperature in Celsius.
-    """
-    return thermistor.get_temperature(EXTRUDER_TEMPERATURE_SENSOR_CHANNEL)
-
-
-def get_bed_temperature():
-    """ Measure bed temperature.
-    :return: temperature in Celsius.
-    """
-    return thermistor.get_temperature(BED_TEMPERATURE_SENSOR_CHANNEL)
 
 
 def disable_steppers():
@@ -148,12 +96,14 @@ def __calibrate_private(x, y, z, invert):
     if z:
         pins |= STEP_PIN_MASK_Z
         max_size = max(max_size, TABLE_SIZE_Z_MM * STEPPER_PULSES_PER_MM_Z)
+    
     pulses_per_mm_avg = (STEPPER_PULSES_PER_MM_X + STEPPER_PULSES_PER_MM_Y
                          + STEPPER_PULSES_PER_MM_Z) / 3.0
     pulses_per_sec = CALIBRATION_VELOCITY_MM_PER_MIN / 60.0 * pulses_per_mm_avg
     end_time = time.time() + 1.2 * max_size / pulses_per_sec
     delay = int(1000000 / pulses_per_sec)
     last_pins = ~pins
+    
     while time.time() < end_time:
         # check each axis end stop twice
         x_endstop = (STEP_PIN_MASK_X & pins) != 0
@@ -327,9 +277,6 @@ def deinit():
     disable_steppers()
     pwm.remove_all()
     gpio.clear(SPINDLE_PWM_PIN)
-    gpio.clear(FAN_PIN)
-    gpio.clear(EXTRUDER_HEATER_PIN)
-    gpio.clear(BED_HEATER_PIN)
     watchdog.stop()
 
 
